@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Todo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container mt-2">
+    <div class="col-sm-6">
+        <form th:action="@{|/todo/${todo.id}|}" method="post">
+            <div class="card"></div>
+            <div class="card-header">Formulario Todo</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Usuario</label>
+
+                    <select th:field="*{todo.user}" class="form-control">
+                        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input th:field="*{todo.title}" type="text" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Completada</label>
+                    <select class="form-control" th:field="*{todo.completed}">
+                        <option th:value="true">Completada</option>
+                        <option th:value="false">No completada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <ul th:if="${error}" class="alert alert-danger" role="alert">
+                            <li th:each="errorMessage : ${error}" th:text="${errorMessage}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-danger" th:href="@{/todo}">Cancelar</a>
+                <input type="submit" value="Guardar Cambios" class="btn btn-success">
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

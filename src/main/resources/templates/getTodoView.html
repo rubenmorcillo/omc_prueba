@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OMC - TODO LIST</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/todo}">Listado</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="btn btn-primary" th:href="@{/todo/form}" >Crear nuevo</a>
+
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+    <form class="form-check my-2 my-lg-0" th:action="@{/todo}">
+       <div class="form-inline mb-2">
+           <label>Buscar Tarea por Título</label>
+           <input class="form-control mr-sm-2" type="search" name="searchTitle" id="searchTitle" placeholder="Título tarea" aria-label="Search">
+           <button  class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+       </div>
+
+        <div class="form-inline mb-2">
+            <label>Buscar Usuario por Username</label>
+            <input class="form-control mr-sm-2" type="search" name="searchUser" id="searchUser" placeholder="Username" aria-label="Search">
+            <button  class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        </div>
+        <button  class="btn btn-outline-success my-2 my-sm-0" type="reset"  vale="Limpiar">Limpiar</button>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th ><a class="page-link" th:href="@{|/todo?page=${actual}&sort=title,${inverseDirection}|}">Título</a></th>
+            <th ><a class="page-link" th:href="@{|/todo?page=${actual}&sort=user.username,${inverseDirection}|}">Username</a></th>
+            <th ><a class="page-link" th:href="@{|/todo?page=${actual}&sort=user.address.country,${inverseDirection}|}">País</a></th>
+            <th >Completada</th>
+
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="todo:${todoList}">
+                <td  th:text="${todo.title}"></td>
+                <td th:text="${todo.user.username}"></td>
+                <td th:text="${todo.user.address.country}"></td>
+                <td ><input type="checkbox" name="completed" th:checked="${todo.completed}"  disabled="true" /></td>
+                <td ><a class="btn btn-primary" th:href="@{|/todo/${todo.id}|}">Editar</a></td>
+                <td ><a class="btn btn-danger" th:href="@{|/todo/del/${todo.id}|}">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${prev < 0 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{|/todo?page=${prev}|}">Anterior</a>
+                    </li>
+                    <li class="page-item" th:classappend="${current == page ? 'active' : '' }" th:each="page : ${pages}">
+                        <a class="page-link" th:href="@{|/todo?page=${page-1}|}" th:text="${page}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${current >= last ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{|/todo?page=${next}|}">Siguiente</a>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+</div>
+</body>
+</html>
